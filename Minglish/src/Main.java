@@ -41,7 +41,7 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    String[] words = {"baa", "abcd", "abca", "cab", "cad"};
+    String[] words = {"z", "yx", "yz"};
 
     // Creating the graph
     Graph alphabetGraph = new Graph();
