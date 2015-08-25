@@ -1,21 +1,17 @@
-import java.util.Arrays;
 import java.util.Hashtable;
 
 public class Main {
-
-  static Hashtable<String, Boolean> visited =  new Hashtable<String, Boolean>();
+  static Hashtable<String, Boolean> visited =  new Hashtable<>();
   static int counter;
   static String[] alphabet;
 
   public static void dfs(Graph g, String vertex) {
-    if (visited.get(vertex) == null || !visited.get(vertex)) {
-      visited.put(vertex, Boolean.TRUE);
-      for (String neighbor: g.getNeighbors(vertex))
-        dfs(g, neighbor);
+    for (String neighbor : g.getNeighbors(vertex)) {
+      visited.put(neighbor, Boolean.TRUE);
+      dfs(g, neighbor);
     }
-
     // We keep a counter to make the topological sort, the counter starts at n - 1 (n being the number of vertices
-    // in the graph) thus the vertex whose dfs finishes first will be put at the end of the alphabet array
+    // in the graph) thus the vertex whose dfs finishes first will be put at the end of the alphabet array.
     alphabet[counter] = vertex;
     counter--;
   }
@@ -30,10 +26,13 @@ public class Main {
     return alphabet;
   }
 
+  // For example: comparing "yx" and "yz" will return ["x", "z] meaning that x < z
+  // and it returns null if a comparison cannot be inferred from the two words.
   public static String[] compare2Words(String word1, String word2) {
     for (int i = 0; i < Math.min(word1.length(), word2.length()); i++) {
-      if (word1.charAt(i) != word2.charAt(i))
-        return new String[] { word1.substring(i, i + 1), word2.substring(i, i + 1) };
+      String c1 = "" + word1.charAt(i), c2 = "" + word2.charAt(i);
+      if (!c1.equals(c2))
+        return new String[] { c1, c2 };
     }
     return null;
   }
@@ -51,7 +50,8 @@ public class Main {
 
     alphabet = topSort(alphabetGraph);
 
-    System.out.println(Arrays.toString(alphabet));
-    // ==> [x, z, y]
+    for (String c: alphabet)
+      System.out.print(c);
+    // ==> xzy
   }
 }
