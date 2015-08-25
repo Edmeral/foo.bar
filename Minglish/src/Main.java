@@ -6,22 +6,25 @@ public class Main {
   static String[] alphabet;
 
   public static void dfs(Graph g, String vertex) {
-    for (String neighbor : g.getNeighbors(vertex)) {
-      visited.put(neighbor, Boolean.TRUE);
-      dfs(g, neighbor);
+    if (visited.get(vertex) == null || !visited.get(vertex)) {
+      visited.put(vertex, Boolean.TRUE);
+      for (String neighbor : g.getNeighbors(vertex)) {
+        dfs(g, neighbor);
+      }
+      // We keep a counter to make the topological sort, the counter starts at n - 1 (n being the number of vertices
+      // in the graph) thus the vertex whose dfs finishes first will be put at the end of the alphabet array.
+      alphabet[counter] = vertex;
+      counter--;
     }
-    // We keep a counter to make the topological sort, the counter starts at n - 1 (n being the number of vertices
-    // in the graph) thus the vertex whose dfs finishes first will be put at the end of the alphabet array.
-    alphabet[counter] = vertex;
-    counter--;
   }
 
   public static String[] topSort(Graph g) {
     counter = g.size() - 1;
     alphabet = new String[counter + 1];
     for (String vertex: g.getVertices()) {
-      if (visited.get(vertex) == null || !visited.get(vertex))
+      if (visited.get(vertex) == null || !visited.get(vertex)) {
         dfs(g, vertex);
+      }
     }
     return alphabet;
   }
@@ -38,7 +41,7 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    String[] words = {"z", "yx", "yz"};
+    String[] words = {"baa", "abcd", "abca", "cab", "cad"};
 
     // Creating the graph
     Graph alphabetGraph = new Graph();
